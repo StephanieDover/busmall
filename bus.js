@@ -30,7 +30,8 @@ var wine = new Product ('Wine Glass', 'img/wine-glass.jpg');
 
 var productsArray = [bag, banana, bathroom, boot, breakfast, bubblegum, chair, cthulhu, duck, dragon, pen, sweepPet, scissors, shark, sweepBaby, tauntaun, unicorn, usb, watering, wine];
 
-var displayProduct = function(){
+var displayProduct = function() {
+
   for ( var productLoop = 0; productLoop < 1; productLoop++) {
     var randomNum = Math.floor(Math.random()* productsArray.length);
 
@@ -39,7 +40,9 @@ var displayProduct = function(){
     image.src = productsArray[randomNum].filePath;
     el.appendChild(image);
 
+
     do {
+
       var randomNumTwo = Math.floor(Math.random()* productsArray.length);
     } while ( randomNumTwo === randomNum);
     el = document.getElementById('img-2');
@@ -55,9 +58,17 @@ var displayProduct = function(){
     image.src = productsArray[randomNumThree].filePath;
     el.appendChild(image);
 
-
-    console.log(productsArray[productLoop].filePath);
-
+    productsArray[randomNumThree].clicks++;
+    console.log(productsArray[randomNumThree].clicks);
   }
 };
 displayProduct();
+
+var imageClick = document.getElementById('img-1');
+imageClick.addEventListener('click', displayProduct);
+
+imageClick = document.getElementById('img-2');
+imageClick.addEventListener('click', displayProduct);
+
+imageClick = document.getElementById('img-3');
+imageClick.addEventListener('click', displayProduct);

@@ -1,8 +1,9 @@
 'use strict';
 
-function Product(name, filePath) {
+function Product(name, filePath, imageId) {
   this.name = name ;
   this.filePath= filePath;
+  this.imageId = imageId;
   this.displayed = 0;
   this.clicks = 0;
 }
@@ -38,83 +39,102 @@ var clicks = 0;
 var getRandomIndex = function() {
   return  Math.floor(Math.random()* photos.length);
 };
+function displayPhotos() {
+  var el ;
 
-function photoSelector() {
-
-  var el = document.getElementById('images');
-  var image = document.createElement('img');
-  var clearImages = document.querySelectorAll('img');
-
-  if (clearImages.length != 0) {
-    el.removeChild(clearImages[0]);
-    el.removeChild(clearImages[1]);
-    el.removeChild(clearImages[2]);
-  }
-  // el.removeChild(image);
-
-  //swaps photos through arrays so there are no repeats
   photos = photos.concat(photosOnSecondToLastScreen);
   photosOnSecondToLastScreen = photosOnPreviousScreen;
   photosOnPreviousScreen = photosOnScreen;
   photosOnScreen = [];
+  for (var i = 0; i < 3; i++) {
+    var nextPhoto = photos.splice(getRandomIndex(photos), 1);
+    photosOnScreen = photosOnScreen.concat(nextPhoto);
+    el = document.getElementById('' + i);
 
-  //selects random photos from avialable photos array
-  var nextPhoto = photos.splice(getRandomIndex(photos), 1);
-  photosOnScreen = photosOnScreen.concat(nextPhoto);
-  el = document.getElementById('images');
-  image = document.createElement('img');
-  el.appendChild(image);
-  image.src = nextPhoto[0].filePath;
-  nextPhoto[0].clicks++;
-
-  nextPhoto = photos.splice(getRandomIndex(photos), 1);
-  photosOnScreen = photosOnScreen.concat(nextPhoto);
-  el = document.getElementById('images');
-  image = document.createElement('img');
-  el.appendChild(image);
-  image.src = nextPhoto[0].filePath;
-  nextPhoto[0].clicks++;
-
-
-  nextPhoto = photos.splice(getRandomIndex(photos), 1);
-  photosOnScreen = photosOnScreen.concat(nextPhoto);
-  el = document.getElementById('images');
-  image = document.createElement('img');
-  el.appendChild(image);
-  image.src = nextPhoto[0].filePath;
-  nextPhoto[0].clicks++;
-
+    el.src = nextPhoto[0].filePath;
+    nextPhoto[0].displayed++;
+  }
+}
+function photoSelector(event) {
+  console.log(event.target.id)
+  photosOnScreen[event.target.id].clicks++
+  console.log(photosOnScreen[event.target.id].clicks)
+  displayPhotos();
   clicks++;
 
+
+}
+
+function displayChart() {
   if (clicks === 25) {
     var canvas = document.getElementById('chart-canvas');
     var ctx = canvas.getContext('2d');
     var data = {
       labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
       datasets:[{
-        label: 'Clicks Per Product',
+        label: 'Displayed',
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030',
+          '#703030'
         ],
         borderWidth: 1,
-        data: [bag.clicks, banana.clicks, bathroom.clicks, boots.clicks, breakfast.clicks, bubblegum.clicks, chair.clicks, cthulhu.clicks, duckDog.clicks, dragon.clicks, pen.clicks, broomDog.clicks, scissors.clicks, shark.clicks, broomBaby.clicks, tauntaun.clicks, unicorn.clicks, usb.clicks, watering.clicks, wine.clicks ] }]
+        data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]},
+        {
+          label: 'Clicks',
+          backgroundColor: [
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B',
+            '#2F343B'
+          ],
+          borderWidth: 1,
+          data: [bag.clicks, banana.clicks, bathroom.clicks, boots.clicks, breakfast.clicks, bubblegum.clicks, chair.clicks, cthulhu.clicks, duckDog.clicks, dragon.clicks, pen.clicks, broomDog.clicks, scissors.clicks, shark.clicks, broomBaby.clicks, tauntaun.clicks, unicorn.clicks, usb.clicks, watering.clicks, wine.clicks ] }]
+        };
+        canvas.height = '25%';
+        canvas.width = '25%';
+        var myBarChart = new Chart(ctx, {
+          type: 'bar',
+          data: data,
+        });
+      }
     };
-    canvas.height = '25%';
-    canvas.width = '25%';
-    var myBarChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-    });
-  }
-}
+    displayPhotos();
+    displayChart();
 
-photoSelector();
-
-
-var imageClick = document.getElementById('images');
-imageClick.addEventListener('click', photoSelector);
+    var imageClick = document.getElementById('images');
+    // var imageClickCounter = document.getElementById('')
+    imageClick.addEventListener('click', photoSelector);

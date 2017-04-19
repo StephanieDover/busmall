@@ -36,6 +36,7 @@ var wine =  new Product ('Wine Glass', 'img/wine-glass.jpg');
 var photos = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, duckDog, dragon, pen, broomDog, scissors, shark, broomBaby, tauntaun, unicorn, usb, watering, wine ];
 
 var clicks = 0;
+
 var getRandomIndex = function() {
   return  Math.floor(Math.random()* photos.length);
 };
@@ -56,85 +57,88 @@ function displayPhotos() {
   }
 }
 function photoSelector(event) {
-  console.log(event.target.id)
-  photosOnScreen[event.target.id].clicks++
-  console.log(photosOnScreen[event.target.id].clicks)
+  console.log(event.target.id);
+  photosOnScreen[event.target.id].clicks++;
+  console.log(photosOnScreen[event.target.id].clicks);
   displayPhotos();
   clicks++;
 
-
+  if (clicks === 25) {
+    var imagEl = document.getElementById('images');
+    imagEl.style.display = 'none';
+    displayChart();
+  }
 }
 
 function displayChart() {
-  if (clicks === 25) {
-    var canvas = document.getElementById('chart-canvas');
-    var ctx = canvas.getContext('2d');
-    var data = {
-      labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
-      datasets:[{
-        label: 'Displayed',
-        backgroundColor: [
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030',
-          '#703030'
-        ],
-        borderWidth: 1,
-        data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]},
-        {
-          label: 'Clicks',
-          backgroundColor: [
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B',
-            '#2F343B'
-          ],
-          borderWidth: 1,
-          data: [bag.clicks, banana.clicks, bathroom.clicks, boots.clicks, breakfast.clicks, bubblegum.clicks, chair.clicks, cthulhu.clicks, duckDog.clicks, dragon.clicks, pen.clicks, broomDog.clicks, scissors.clicks, shark.clicks, broomBaby.clicks, tauntaun.clicks, unicorn.clicks, usb.clicks, watering.clicks, wine.clicks ] }]
-        };
-        canvas.height = '25%';
-        canvas.width = '25%';
-        var myBarChart = new Chart(ctx, {
-          type: 'bar',
-          data: data,
-        });
-      }
-    };
-    displayPhotos();
-    displayChart();
 
-    var imageClick = document.getElementById('images');
-    // var imageClickCounter = document.getElementById('')
-    imageClick.addEventListener('click', photoSelector);
+  var canvas = document.getElementById('chart-canvas');
+  var ctx = canvas.getContext('2d');
+  var data = {
+    labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
+    datasets:[{
+      label: 'Clicks',
+      backgroundColor: [
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B',
+        '#2F343B'
+      ],
+      borderWidth: 1,
+      data: [bag.clicks, banana.clicks, bathroom.clicks, boots.clicks, breakfast.clicks, bubblegum.clicks, chair.clicks, cthulhu.clicks, duckDog.clicks, dragon.clicks, pen.clicks, broomDog.clicks, scissors.clicks, shark.clicks, broomBaby.clicks, tauntaun.clicks, unicorn.clicks, usb.clicks, watering.clicks, wine.clicks ]},
+    {
+      label: 'Displayed',
+      backgroundColor: [
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030',
+        '#703030'
+      ],
+      borderWidth: 1,
+      data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]}
+    ]
+  };
+  canvas.height = '500px';
+  canvas.width = '500px';
+  var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+  });
+}
+
+displayPhotos();
+
+var imageClick = document.getElementById('images');
+imageClick.addEventListener('click', photoSelector);

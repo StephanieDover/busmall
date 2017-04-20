@@ -35,6 +35,12 @@ var wine =  new Product ('Wine Glass', 'img/wine-glass.jpg');
 
 var photos = [bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, duckDog, dragon, pen, broomDog, scissors, shark, broomBaby, tauntaun, unicorn, usb, watering, wine ];
 
+try {
+  photos = JSON.parse(localStorage.photos);
+} catch(error){
+  console.log('error retreiveing local storage');
+}
+
 var clicks = 0;
 
 var getRandomIndex = function() {
@@ -57,9 +63,7 @@ function displayPhotos() {
   }
 }
 function photoSelector(event) {
-  console.log(event.target.id);
   photosOnScreen[event.target.id].clicks++;
-  console.log(photosOnScreen[event.target.id].clicks);
   displayPhotos();
   clicks++;
 
@@ -69,67 +73,42 @@ function photoSelector(event) {
     displayChart();
     displayChartTwo();
     getTable();
+    try {
+      localStorage.photos = JSON.stringify(photos);
+    } catch (error) {
+      console.log('something went wrong', error);
+    }
   }
 }
 
+
 function displayChart() {
+  photos = photos.concat(photosOnSecondToLastScreen);
+  photos = photos.concat(photosOnScreen);
+  photos = photos.concat(photosOnPreviousScreen);
+  var chartLabel = [];
+  var clicks = [];
+  var displays = [];
+  for (var i = 0; i <photos.length; i++) {
+    chartLabel.push(photos[i].name);
+    clicks.push(photos[i].clicks);
+    displays.push(photos[i].displayed);
+  }
 
   var canvas = document.getElementById('chart-canvas1');
   var ctx = canvas.getContext('2d');
   var data = {
-    labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
+    labels: chartLabel,
     datasets:[{
       label: 'Clicks',
-      backgroundColor: [
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B',
-        '#2F343B'
-      ],
+      backgroundColor:'#2F343B',
       borderWidth: 1,
-      data: [bag.clicks, banana.clicks, bathroom.clicks, boots.clicks, breakfast.clicks, bubblegum.clicks, chair.clicks, cthulhu.clicks, duckDog.clicks, dragon.clicks, pen.clicks, broomDog.clicks, scissors.clicks, shark.clicks, broomBaby.clicks, tauntaun.clicks, unicorn.clicks, usb.clicks, watering.clicks, wine.clicks ]},
+      data: clicks},
     {
       label: 'Displayed',
-      backgroundColor: [
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030',
-        '#703030'
-      ],
+      backgroundColor: '#703030',
       borderWidth: 1,
-      data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]},
+      data: displays,}
     ]
   };
   canvas.height = '500';
@@ -140,40 +119,21 @@ function displayChart() {
   });
 }
 function displayChartTwo() {
-
-  var canvas = document.getElementById('chart-canvas1');
+  var chartLabel = [];
+  var percent= [];
+  for (var i = 0; i <photos.length; i++) {
+    chartLabel.push(photos[i].name);
+    percent.push(Math.floor((photos[i].clicks/photos[i].displayed)*100));
+  }
+  var canvas = document.getElementById('chart-canvas2');
   var ctx = canvas.getContext('2d');
   var data = {
-    labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
+    labels: chartLabel,
     datasets:[{
-      label: 'Displayed',
-      backgroundColor: [
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4',
-        '#E3CDA4'
-      ],
+      label: '% of Clicks when Viewed',
+      backgroundColor:'#E3CDA4',
       borderWidth: 1,
-      data: [((bag.clicks/bag.displayed)* 100).toFixed(0),
-        ((banana.clicks/banana.displayed)* 100).toFixed(0), ((bathroom.clicks/bathroom.displayed)* 100).toFixed(0), ((boots.clicks/boots.displayed)* 100).toFixed(0), ((breakfast.clicks/breakfast.displayed)* 100).toFixed(0), ((bubblegum.clicks/bubblegum.displayed)* 100).toFixed(0), ((chair.clicks/chair.displayed)* 100).toFixed(0), ((cthulhu.clicks/cthulhu.displayed)* 100).toFixed(0), ((duckDog.clicks/duckDog.displayed)* 100).toFixed(0), ((dragon.clicks/dragon.displayed)* 100).toFixed(0),
-        ((pen.clicks/pen.displayed)* 100).toFixed(0), ((broomDog.clicks/broomDog.displayed)* 100).toFixed(0), ((scissors.clicks/scissors.displayed)* 100).toFixed(0), ((shark.clicks/shark.displayed)* 100).toFixed(0), ((broomBaby.clicks/broomBaby.displayed)* 100).toFixed(0), ((tauntaun.clicks/tauntaun.displayed)* 100).toFixed(0), ((unicorn.clicks/unicorn.displayed)* 100).toFixed(0), ((usb.clicks/usb.displayed)* 100).toFixed(0), ((watering.clicks/watering.displayed)* 100).toFixed(0),
-        ((wine.clicks/wine.displayed)* 100).toFixed(0) ]},
+      data: percent,}
     ]
   };
   canvas.height = '500';
@@ -184,10 +144,9 @@ function displayChartTwo() {
   });
 }
 
+
 function getTable(){
-  photosOnPreviousScreen = photosOnScreen;
-  photosOnSecondToLastScreen = photosOnPreviousScreen;
-  photos = photos.concat(photosOnSecondToLastScreen);
+
   var result = document.getElementById('table-data');
   var table = document.createElement('table');
   table.id = table;
@@ -238,6 +197,8 @@ function getTable(){
     }
   }
 }
+
+
 displayPhotos();
 
 var imageClick = document.getElementById('images');

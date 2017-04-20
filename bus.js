@@ -67,12 +67,14 @@ function photoSelector(event) {
     var imagEl = document.getElementById('images');
     imagEl.style.display = 'none';
     displayChart();
+    displayChartTwo();
+    getTable();
   }
 }
 
 function displayChart() {
 
-  var canvas = document.getElementById('chart-canvas');
+  var canvas = document.getElementById('chart-canvas1');
   var ctx = canvas.getContext('2d');
   var data = {
     labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
@@ -127,17 +129,115 @@ function displayChart() {
         '#703030'
       ],
       borderWidth: 1,
-      data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]}
+      data: [bag.displayed, banana.displayed, bathroom.displayed, boots.displayed, breakfast.displayed, bubblegum.displayed, chair.displayed, cthulhu.displayed, duckDog.displayed, dragon.displayed, pen.displayed, broomDog.displayed, scissors.displayed, shark.displayed, broomBaby.displayed, tauntaun.displayed, unicorn.displayed, usb.displayed, watering.displayed, wine.displayed ]},
     ]
   };
-  canvas.height = '500px';
-  canvas.width = '500px';
+  canvas.height = '500';
+  canvas.width = '500';
+  var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: data,
+  });
+}
+function displayChartTwo() {
+
+  var canvas = document.getElementById('chart-canvas1');
+  var ctx = canvas.getContext('2d');
+  var data = {
+    labels: ['bag', 'banana', 'bathroom', 'boots','breakfast', 'bubblegum', 'chair', 'cthulhu', 'duckDog', 'dragon', 'pen', 'broomDog', 'scissors', 'shark', 'broomBaby', 'tauntaun', 'unicorn', 'usb', 'watering', 'wine' ],
+    datasets:[{
+      label: 'Displayed',
+      backgroundColor: [
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4',
+        '#E3CDA4'
+      ],
+      borderWidth: 1,
+      data: [((bag.clicks/bag.displayed)* 100).toFixed(0),
+        ((banana.clicks/banana.displayed)* 100).toFixed(0), ((bathroom.clicks/bathroom.displayed)* 100).toFixed(0), ((boots.clicks/boots.displayed)* 100).toFixed(0), ((breakfast.clicks/breakfast.displayed)* 100).toFixed(0), ((bubblegum.clicks/bubblegum.displayed)* 100).toFixed(0), ((chair.clicks/chair.displayed)* 100).toFixed(0), ((cthulhu.clicks/cthulhu.displayed)* 100).toFixed(0), ((duckDog.clicks/duckDog.displayed)* 100).toFixed(0), ((dragon.clicks/dragon.displayed)* 100).toFixed(0),
+        ((pen.clicks/pen.displayed)* 100).toFixed(0), ((broomDog.clicks/broomDog.displayed)* 100).toFixed(0), ((scissors.clicks/scissors.displayed)* 100).toFixed(0), ((shark.clicks/shark.displayed)* 100).toFixed(0), ((broomBaby.clicks/broomBaby.displayed)* 100).toFixed(0), ((tauntaun.clicks/tauntaun.displayed)* 100).toFixed(0), ((unicorn.clicks/unicorn.displayed)* 100).toFixed(0), ((usb.clicks/usb.displayed)* 100).toFixed(0), ((watering.clicks/watering.displayed)* 100).toFixed(0),
+        ((wine.clicks/wine.displayed)* 100).toFixed(0) ]},
+    ]
+  };
+  canvas.height = '500';
+  canvas.width = '500';
   var myBarChart = new Chart(ctx, {
     type: 'bar',
     data: data,
   });
 }
 
+function getTable(){
+  photosOnPreviousScreen = photosOnScreen;
+  photosOnSecondToLastScreen = photosOnPreviousScreen;
+  photos = photos.concat(photosOnSecondToLastScreen);
+  var result = document.getElementById('table-data');
+  var table = document.createElement('table');
+  table.id = table;
+  var titleRow = document.createElement('tr');
+  var titleItem = document.createElement('th');
+  titleItem.textContent = 'Item';
+  var titleViews = document.createElement('th');
+  titleViews.textContent = 'Views';
+  var titleClicks = document.createElement('th');
+  titleClicks.textContent = 'Clicks';
+  var titlePercetage = document.createElement('th');
+  titlePercetage.textContent = '% of Clicks When Viewed';
+  var titleRecomended = document.createElement('th');
+  titleRecomended.textContent = 'Recomended';
+  result.appendChild(table);
+  table.appendChild(titleItem);
+  table.appendChild(titleViews);
+  table.appendChild(titleClicks);
+  table.appendChild(titlePercetage);
+  table.appendChild(titleRecomended);
+
+  for (var i = 0; i < photos.length; i++) {
+
+    var row = document.createElement('tr');
+    titleRow.appendChild(row);
+    var item = document.createElement('td');
+    item.textContent = photos[i].name;
+    var views = document.createElement('td');
+    views.textContent = photos[i].displayed;
+    var clicks = document.createElement('td');
+    clicks.textContent = photos[i].clicks;
+    var percetage = document.createElement('td');
+    percetage.textContent = ((photos[i].clicks/photos[i].displayed)*100).toFixed(0);
+    table.appendChild(row);
+    table.appendChild(item);
+    table.appendChild(views);
+    table.appendChild(clicks);
+    table.appendChild(percetage);
+
+    if (((photos[i].clicks/photos[i].displayed)*100).toFixed(0) > 30){
+      var recomended = document.createElement('td');
+      recomended.textContent = 'Yes';
+      table.appendChild(recomended);
+    } else {
+      recomended = document.createElement('td');
+      recomended.textContent = 'No';
+      table.appendChild(recomended);
+    }
+  }
+}
 displayPhotos();
 
 var imageClick = document.getElementById('images');

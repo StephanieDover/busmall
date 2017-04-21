@@ -53,6 +53,7 @@ function displayPhotos() {
   photosOnSecondToLastScreen = photosOnPreviousScreen;
   photosOnPreviousScreen = photosOnScreen;
   photosOnScreen = [];
+  
   for (var i = 0; i < 3; i++) {
     var nextPhoto = photos.splice(getRandomIndex(photos), 1);
     photosOnScreen = photosOnScreen.concat(nextPhoto);
@@ -150,6 +151,10 @@ function displayChartTwo() {
     data: data,
   });
 }
+//table to display data
+
+
+
 
 function getTable(){
 

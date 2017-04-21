@@ -70,6 +70,10 @@ function photoSelector(event) {
   if (clicks === 25) {
     var imagEl = document.getElementById('images');
     imagEl.style.display = 'none';
+    var welcome = document.getElementById('welcome');
+    welcome.style.display = 'none';
+    var restart = document.getElementById('restart');
+    restart.style.display = 'block';
     displayChart();
     displayChartTwo();
     getTable();
@@ -80,7 +84,6 @@ function photoSelector(event) {
     }
   }
 }
-
 
 function displayChart() {
   photos = photos.concat(photosOnSecondToLastScreen);
@@ -101,12 +104,14 @@ function displayChart() {
     labels: chartLabel,
     datasets:[{
       label: 'Clicks',
-      backgroundColor:'#2F343B',
+      backgroundColor:'#42826C',
+      borderColor: '#002F32',
       borderWidth: 1,
       data: clicks},
     {
       label: 'Displayed',
-      backgroundColor: '#703030',
+      backgroundColor: '#A5C77F',
+      borderColor: '#002F32',
       borderWidth: 1,
       data: displays,}
     ]
@@ -127,11 +132,13 @@ function displayChartTwo() {
   }
   var canvas = document.getElementById('chart-canvas2');
   var ctx = canvas.getContext('2d');
+  Chart.defaults.global.defaultFontColor = '#000000';
   var data = {
     labels: chartLabel,
     datasets:[{
       label: '% of Clicks when Viewed',
-      backgroundColor:'#E3CDA4',
+      backgroundColor:'#002F32',
+      borderColor: '#42826C',
       borderWidth: 1,
       data: percent,}
     ]
@@ -143,7 +150,6 @@ function displayChartTwo() {
     data: data,
   });
 }
-
 
 function getTable(){
 
@@ -198,8 +204,11 @@ function getTable(){
   }
 }
 
-
 displayPhotos();
-
+function refreshWindow(event){
+  window.location.reload();
+  }
 var imageClick = document.getElementById('images');
 imageClick.addEventListener('click', photoSelector);
+var refresh = document.getElementById('restart');
+refresh.addEventListener('click', refreshWindow);

@@ -10,25 +10,59 @@
 html, body {
   height: 100%;
 }
+body {
+  background-color: #F2EBC7;
+}
 .app {
   width: 960px;
   margin: 0 auto;
-  height: 100%;
-  background-color: #FFF;
+  height: auto;
+  background-color: #962D3E;
 }
 h1 {
   text-align: center;
+  font-family: 'Lobster Two', cursive;
+  font-size: 5em;
+}
+p {
+  font-family: Georgia, serif;
+  font-size: 2em;
+  text-align: center;
+  margin-top: 40px;
+  font-family: 'Lobster Two', cursive;
+}
+#restart {
+  display: none;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  font-size: 2em;
+  margin-left: 400px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  font-family: 'Lobster Two', cursive;
+  border-style: outset;
+  box-shadow: 3px 3px 3px 3px black;
 }
 img {
   width: auto;
   height: 200px;
+  margin-top: 75px;
+  margin-left: 80px;
+  border-radius: 25px;
 }
-#images {
-  position: absolute;
-  top: 200px;
-  width: 0 auto;
+img:hover {
+  height: 250px;
+  width: 250px;
 }
-canvas {
-  width: 960px;
-  height: 600px;
+.img-app {
+  margin-top: 70px;
+  margin-left: 10px;
+  height: 400px;
+  width: 940px;
+  border: 5px solid #1B1D26;
+  border-radius: 25px;
+}
+table, th, tr, td {
+  border: 2px solid black;
 }
